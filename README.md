@@ -171,12 +171,15 @@ The unified platform architecture is defined in [`UNIFIED_SYSTEM_ARCHITECTURE.md
 
 ## 📈 Roadmap
 
-| Phase | Focus | Timeline |
-|-------|-------|----------|
-| **Fase 1** | Storage & ETL — `maftia_quant.db` schema, unified pipelines | Weeks 1–3 |
-| **Fase 2** | API Gateway — Hono v4 on Bun, REST + WebSocket | Weeks 4–6 |
-| **Fase 3** | Frontend Core — Executive Dashboard, crosshair sync, y-axis lock | Weeks 7–10 |
-| **Fase 4** | Advanced Sandboxes — 5 deep-dive workspaces | Weeks 11–16 |
+> 📋 **Detailed roadmap with milestones, dependencies, and acceptance criteria:**  
+> **→ [ROADMAP.md](./ROADMAP.md)**
+
+| Phase | Focus | Timeline | Status |
+|-------|-------|----------|--------|
+| **Phase 1** | Storage & ETL — `maftia_quant.db` schema, unified pipelines | Weeks 1–3 | `[ ]` Not started |
+| **Phase 2** | API Gateway — Hono v4 on Bun, REST + WebSocket | Weeks 4–6 | `[ ]` Not started |
+| **Phase 3** | Frontend Core — Executive Dashboard, crosshair sync, y-axis lock | Weeks 7–10 | `[ ]` Not started |
+| **Phase 4** | Advanced Sandboxes — 4 deep-dive workspaces | Weeks 11–16 | `[ ]` Not started |
 
 ---
 

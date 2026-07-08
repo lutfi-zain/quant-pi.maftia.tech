@@ -4,19 +4,19 @@ schema: spec-driven
 context: |
   Domain: Unified Bitcoin Quantitative Intelligence Platform
   Repository: quant-pi.maftia.tech
-  
+
   ## Systems (4 to unify)
   1. Valuation System — 17-indicator MVO piecewise [-2,+2], macro cycle
   2. LTTD System — 3-State HMM + PCA + XGBoost, 120-350 day horizon
   3. MTTD System — Multi-principle consensus + IMO, 10-120 day horizon
   4. Ichimoku Terminal — tanh Ichimoku + SuperSmoother, 10-60 day horizon
-  
+
   ## Tech Stack
   - Python 3.10+ (analytics engines): pandas, numpy, scikit-learn, hmmlearn, XGBoost
   - TypeScript/Bun (API Gateway): Hono v4
   - React 18 + TypeScript (Frontend): Vite, TradingView Lightweight Charts v5
   - Storage: SQLite WAL (maftia_quant.db)
-  
+
   ## Ubiquitous Language (DDD)
   - MVO: Master Valuation Oscillator ∈ [-2, +2]
   - LTTD: Long-Term Trend Direction
@@ -34,7 +34,7 @@ context: |
   - tanh: Hyperbolic tangent → [-1, +1] bounded
   - SuperSmoother: Ehlers 2-pole IIR filter
   - WFO: Walk-Forward Optimization
-  
+
   ## Architecture
   - Interlocking safeguards: Circuit Breaker (Tier 1), Regime Override (Tier 2)
   - Binary sizing: Position always 0.0 or 1.0 — no fractional

@@ -1,0 +1,22 @@
+{
+  "name": "maftia-quant-api",
+  "version": "1.0.0",
+  "description": "Maftia Quant Unified API Gateway",
+  "type": "module",
+  "scripts": {
+    "dev": "bun run --watch src/index.ts",
+    "start": "bun run src/index.ts",
+    "build": "bun build src/index.ts --outdir dist",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check src/",
+    "lint:fix": "biome check --write src/"
+  },
+  "dependencies": {
+    "hono": "^4.4.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.0",
+    "typescript": "^5.5.0",
+    "@biomejs/biome": "^1.8.0"
+  }
+}

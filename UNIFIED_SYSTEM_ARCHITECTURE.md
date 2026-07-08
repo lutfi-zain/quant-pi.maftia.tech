@@ -692,71 +692,30 @@ crosshairBus.on('crosshair:move', ({ time, source }) => {
 
 ---
 
-## 9. Roadmap Implementasi 4 Fase
+## 9. Roadmap Implementasi
 
-### Fase 1: Storage & ETL (Weeks 1–3)
+> 📋 **Detailed roadmap with milestones, dependencies, and acceptance criteria:**  
+> **→ [ROADMAP.md](./ROADMAP.md)**
 
-| Task | Priority | Complexity | Dependencies |
-|------|----------|-----------|--------------|
-| Design `maftia_quant.db` schema | P0 | Medium | None |
-| Implement Unified OHLCV Pipeline | P0 | Low | Binance API access |
-| Migrate LTTD → unified schema | P0 | Medium | Schema complete |
-| Migrate Valuation → unified schema | P0 | Medium | Schema complete |
-| Causal Freshness Guard implementation | P0 | Low | None |
-| MTTD data sync to SQLite | P1 | Low | Schema complete |
-| Ichimoku data sync to SQLite | P1 | Low | Schema complete |
-| Cross-system daily analytics runner | P1 | Medium | All migrations |
+### Phase Overview
 
-**Deliverable:** `maftia_quant.db` populated with all 5 systems' data, `unified_daily_analytics` table up-to-date.
+| Phase | Focus | Timeline | Status |
+|-------|-------|----------|--------|
+| **Phase 1** | Storage & ETL — `maftia_quant.db` schema, unified pipelines | Weeks 1–3 | `[ ]` Not started |
+| **Phase 2** | API Gateway — Hono v4 on Bun, REST + WebSocket | Weeks 4–6 | `[ ]` Not started |
+| **Phase 3** | Frontend Core — Executive Dashboard, crosshair sync, y-axis lock | Weeks 7–10 | `[ ]` Not started |
+| **Phase 4** | Advanced Sandboxes — 4 deep-dive workspaces | Weeks 11–16 | `[ ]` Not started |
 
-### Fase 2: API Gateway (Weeks 4–6)
+### Dependencies
 
-| Task | Priority | Complexity | Dependencies |
-|------|----------|-----------|--------------|
-| Hono v4 project setup on Bun | P0 | Low | None |
-| REST `/api/v1/market/*` endpoints | P0 | Low | Database ready |
-| REST `/api/v1/valuation/*` endpoints | P0 | Low | Database ready |
-| REST `/api/v1/lttd/*` endpoints | P0 | Low | Database ready |
-| REST `/api/v1/mttd/*` endpoints | P1 | Low | Database ready |
-| REST `/api/v1/ichimoku/*` endpoints | P1 | Low | Database ready |
-| WebSocket `/ws/v1/stream` | P1 | Medium | None |
-| `/api/v1/consensus` endpoint | P0 | Medium | All systems |
-| API authentication & rate limiting | P2 | Medium | None |
-| Deployment to Cloudflare Workers | P2 | Medium | None |
+```mermaid
+graph LR
+    P1[Phase 1<br/>Storage & ETL] --> P2[Phase 2<br/>API Gateway]
+    P2 --> P3[Phase 3<br/>Frontend Core]
+    P3 --> P4[Phase 4<br/>Sandboxes]
+```
 
-**Deliverable:** `api.quant-pi.maftia.tech` serving all endpoints, WebSocket streaming live data.
-
-### Fase 3: Frontend Core (Weeks 7–10)
-
-| Task | Priority | Complexity | Dependencies |
-|------|----------|-----------|--------------|
-| React + Vite + TypeScript scaffold | P0 | Low | None |
-| Design token system (HSL CSS variables) | P0 | Low | Design system complete |
-| Executive Dashboard layout (Bento grid) | P0 | High | API endpoints ready |
-| Cross-System Confluence Gauge | P0 | Medium | API ready |
-| Action Banner component | P0 | Low | API ready |
-| Interactive Summary Table | P0 | Medium | API ready |
-| BTC Price Chart with regime overlay | P0 | High | Lightweight Charts |
-| Vertical Crosshair Synchronization | P0 | High | Multi-chart setup |
-| 85px Y-Axis Width Lock | P0 | Medium | Chart setup |
-| Responsive layout (mobile/desktop) | P1 | Medium | Core layout done |
-
-**Deliverable:** Functional Executive Dashboard with live data, crosshair sync, and y-axis lock.
-
-### Fase 4: Advanced Sandboxes (Weeks 11–16)
-
-| Task | Priority | Complexity | Dependencies |
-|------|----------|-----------|--------------|
-| Valuation Pillar Studio | P1 | High | Sandbox framework |
-| LTTD Orthogonal Regime Lab | P1 | High | Sandbox framework |
-| MTTD Console | P1 | High | Sandbox framework |
-| Ichimoku Terminal | P1 | High | Sandbox framework |
-| Custom threshold editor (Valuation) | P2 | Medium | Pillar Studio |
-| PCA biplot visualization (LTTD) | P2 | Medium | Regime Lab |
-| Gate blocker heatmap (MTTD) | P2 | Medium | Console |
-| Statistical test results panel (Ichimoku) | P2 | Medium | Terminal |
-
-**Deliverable:** 4 fully functional sandboxes with deep-dive analytics.
+For detailed milestones, acceptance criteria, and task breakdown, see [ROADMAP.md](./ROADMAP.md).
 
 ---
 

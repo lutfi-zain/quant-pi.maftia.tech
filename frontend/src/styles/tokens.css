@@ -1,0 +1,170 @@
+/**
+ * Maftia Quant — Design Token System
+ *
+ * HSL CSS variables for theming.
+ * Based on Obsidian Dark-Tech UI aesthetic.
+ */
+
+:root {
+	/* ═══════════════════════════════════════════════════════ */
+	/* CORE PALETTE                                           */
+	/* ═══════════════════════════════════════════════════════ */
+	--deep-obsidian: hsl(220, 24%, 7%); /* Primary background */
+	--obsidian-surface: hsl(220, 20%, 11%); /* Card/panel backgrounds */
+	--obsidian-border: hsl(220, 16%, 16%); /* Borders and dividers */
+
+	/* SEMANTIC SIGNAL COLORS */
+	--bull-emerald: hsl(142, 71%, 45%); /* Bullish/positive signals */
+	--neutral-amber: hsl(45, 93%, 47%); /* Neutral/warning states */
+	--bear-crimson: hsl(0, 84%, 60%); /* Bearish/negative signals */
+
+	/* UTILITY COLORS */
+	--text-primary: hsl(220, 20%, 92%); /* Primary text */
+	--text-secondary: hsl(220, 12%, 60%); /* Secondary text */
+	--text-dim: hsl(220, 10%, 40%); /* Dimmed/inactive text */
+	--accent-blue: hsl(217, 91%, 60%); /* Links and accents */
+	--glass-white: hsla(220, 20%, 92%, 0.08); /* Glass panels */
+	--glass-border: hsla(220, 20%, 92%, 0.12); /* Glass borders */
+}
+
+/* ═══════════════════════════════════════════════════════ */
+/* TYPOGRAPHY SYSTEM                                       */
+/* ═══════════════════════════════════════════════════════ */
+
+:root {
+	/* FONT STACK */
+	--font-display: "Outfit", sans-serif; /* Headers, hero text */
+	--font-mono: "JetBrains Mono", monospace; /* Numbers, code, data */
+
+	/* TYPE SCALE (Major Third — 1.250) */
+	--text-xs: 0.64rem; /* 10.24px — micro labels */
+	--text-sm: 0.8rem; /* 12.8px  — table cells, badges */
+	--text-base: 1rem; /* 16px    — body text */
+	--text-lg: 1.25rem; /* 20px    — card titles */
+	--text-xl: 1.563rem; /* 25px    — section headers */
+	--text-2xl: 1.953rem; /* 31.25px — dashboard title */
+	--text-3xl: 2.441rem; /* 39.06px — hero metrics */
+	--text-4xl: 3.052rem; /* 48.83px — price display */
+}
+
+/* ═══════════════════════════════════════════════════════ */
+/* GLASSMORPHISM PANELS                                    */
+/* ═══════════════════════════════════════════════════════ */
+
+.glass-panel {
+	background: var(--glass-white);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	border: 1px solid var(--glass-border);
+	border-radius: 12px;
+	padding: 24px;
+}
+
+.glass-panel:hover {
+	border-color: hsla(220, 20%, 92%, 0.18);
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* ═══════════════════════════════════════════════════════ */
+/* MOTION DESIGN                                           */
+/* ═══════════════════════════════════════════════════════ */
+
+:root {
+	--transition-fast: 150ms ease-out;
+	--transition-normal: 300ms ease-out;
+	--transition-slow: 500ms ease-out;
+}
+
+/* ═══════════════════════════════════════════════════════ */
+/* GLOBAL STYLES                                           */
+/* ═══════════════════════════════════════════════════════ */
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html,
+body,
+#root {
+	height: 100%;
+	width: 100%;
+}
+
+body {
+	font-family: var(--font-display);
+	background-color: var(--deep-obsidian);
+	color: var(--text-primary);
+	line-height: 1.5;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* ═══════════════════════════════════════════════════════ */
+/* UTILITY CLASSES                                         */
+/* ═══════════════════════════════════════════════════════ */
+
+.font-mono {
+	font-family: var(--font-mono);
+}
+
+.text-primary {
+	color: var(--text-primary);
+}
+
+.text-secondary {
+	color: var(--text-secondary);
+}
+
+.text-dim {
+	color: var(--text-dim);
+}
+
+.text-bull {
+	color: var(--bull-emerald);
+}
+
+.text-bear {
+	color: var(--bear-crimson);
+}
+
+.text-neutral {
+	color: var(--neutral-amber);
+}
+
+/* ═══════════════════════════════════════════════════════ */
+/* BENTO GRID LAYOUT                                       */
+/* ═══════════════════════════════════════════════════════ */
+
+.bento-grid {
+	display: grid;
+	gap: 16px;
+	padding: 16px;
+}
+
+.bento-grid--2 {
+	grid-template-columns: repeat(2, 1fr);
+}
+
+.bento-grid--3 {
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.bento-grid--4 {
+	grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 1024px) {
+	.bento-grid--4 {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (max-width: 640px) {
+	.bento-grid--2,
+	.bento-grid--3,
+	.bento-grid--4 {
+		grid-template-columns: 1fr;
+	}
+}
