@@ -11,8 +11,9 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
-import { createNodeWebSocket } from "hono/node-ws";
-import { Database } from "bun:sqlite";
+import { createNodeWebSocket } from "@hono/node-ws";
+import { serve } from "@hono/node-server";
+import Database from "better-sqlite3";
 
 // ═══════════════════════════════════════════════════════════
 // Types
@@ -38,16 +39,21 @@ interface OnchainMetrics {
 
 interface UnifiedAnalytics {
 	date: string;
-	mvo_score: number | null;
-	lttd_score: number | null;
+	btc_price: number | null;
+	valuation_composite: number | null;
 	lttd_regime: string | null;
-	lttd_exposure: number | null;
+	lttd_score: number | null;
+	lttd_prob_bull: number | null;
+	lttd_prob_bear: number | null;
+	lttd_prob_sideways: number | null;
 	mttd_imo: number | null;
+	mttd_er: number | null;
+	mttd_entropy: number | null;
 	mttd_position: number | null;
-	ichi_imo: number | null;
-	ichi_position: number | null;
-	consensus_score: number | null;
-	consensus_exposure: number | null;
+	mttd_immunity_active: number | null;
+	ichimoku_imo: number | null;
+	ichimoku_regime: string | null;
+	ichimoku_position: number | null;
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -56,9 +62,9 @@ interface UnifiedAnalytics {
 
 const DB_PATH = "../data/maftia_quant.db";
 
-function getDb(): Database {
+function getDb(): Database.Database {
 	const db = new Database(DB_PATH, { readonly: true });
-	db.exec("PRAGMA journal_mode=WAL");
+	db.pragma("journal_mode = WAL");
 	return db;
 }
 
@@ -71,7 +77,13 @@ const { injectWebSocket, upgradeWebSocket } = createNodeWebSocket({ app });
 
 // Middleware
 app.use("*", logger());
-app.use("*", cors());
+app.use(
+	"*",
+	cors({
+		origin: ["http://localhost:5173", "http://0.0.0.0:5173"],
+		allowMethods: ["GET"],
+	}),
+);
 
 // ═══════════════════════════════════════════════════════════
 // Health Check
@@ -114,7 +126,7 @@ app.get("/api/v1/market/ohlc", (c) => {
 			query += ` LIMIT ${parseInt(limit)}`;
 		}
 
-		const rows = db.query(query).all(...params) as OHLCVBar[];
+		const rows = db.prepare(query).all(...params) as OHLCVBar[];
 		return c.json({ data: rows });
 	} finally {
 		db.close();
@@ -136,7 +148,7 @@ app.get("/api/v1/market/onchain", (c) => {
 
 		query += " ORDER BY date DESC";
 
-		const rows = db.query(query).all(...params) as OnchainMetrics[];
+		const rows = db.prepare(query).all(...params) as OnchainMetrics[];
 		return c.json({ data: rows });
 	} finally {
 		db.close();
@@ -151,8 +163,8 @@ app.get("/api/v1/valuation/composite", (c) => {
 	const db = getDb();
 	try {
 		const rows = db
-			.query(
-				"SELECT date, mvo_score FROM unified_daily_analytics ORDER BY date DESC",
+			.prepare(
+				"SELECT date, valuation_composite as mvo_score FROM unified_daily_analytics ORDER BY date DESC",
 			)
 			.all() as { date: string; mvo_score: number | null }[];
 		return c.json({ data: rows });
@@ -165,8 +177,8 @@ app.get("/api/v1/valuation/pillars", (c) => {
 	const db = getDb();
 	try {
 		const rows = db
-			.query(
-				"SELECT date, mvo_pillar_fundamental, mvo_pillar_technical, mvo_pillar_sentiment FROM unified_daily_analytics ORDER BY date DESC",
+			.prepare(
+				"SELECT date, valuation_composite FROM unified_daily_analytics ORDER BY date DESC",
 			)
 			.all();
 		return c.json({ data: rows });
@@ -183,8 +195,8 @@ app.get("/api/v1/lttd/regime", (c) => {
 	const db = getDb();
 	try {
 		const rows = db
-			.query(
-				"SELECT date, lttd_regime, lttd_p_bull, lttd_p_bear, lttd_p_sideways FROM unified_daily_analytics ORDER BY date DESC",
+			.prepare(
+				"SELECT date, lttd_regime, lttd_prob_bull, lttd_prob_bear, lttd_prob_sideways FROM unified_daily_analytics ORDER BY date DESC",
 			)
 			.all();
 		return c.json({ data: rows });
@@ -197,7 +209,7 @@ app.get("/api/v1/lttd/score", (c) => {
 	const db = getDb();
 	try {
 		const rows = db
-			.query(
+			.prepare(
 				"SELECT date, lttd_score FROM unified_daily_analytics ORDER BY date DESC",
 			)
 			.all();
@@ -211,8 +223,8 @@ app.get("/api/v1/lttd/exposure", (c) => {
 	const db = getDb();
 	try {
 		const rows = db
-			.query(
-				"SELECT date, lttd_exposure, lttd_circuit_breaker FROM unified_daily_analytics ORDER BY date DESC",
+			.prepare(
+				"SELECT date, lttd_score, lttd_regime FROM unified_daily_analytics ORDER BY date DESC",
 			)
 			.all();
 		return c.json({ data: rows });
@@ -229,8 +241,8 @@ app.get("/api/v1/mttd/imo", (c) => {
 	const db = getDb();
 	try {
 		const rows = db
-			.query(
-				"SELECT date, mttd_imo FROM unified_daily_analytics ORDER BY date DESC",
+			.prepare(
+				"SELECT date, mttd_imo, mttd_position FROM unified_daily_analytics ORDER BY date DESC",
 			)
 			.all();
 		return c.json({ data: rows });
@@ -243,8 +255,8 @@ app.get("/api/v1/mttd/position", (c) => {
 	const db = getDb();
 	try {
 		const rows = db
-			.query(
-				"SELECT date, mttd_position FROM unified_daily_analytics ORDER BY date DESC",
+			.prepare(
+				"SELECT date, mttd_position, mttd_immunity_active FROM unified_daily_analytics ORDER BY date DESC",
 			)
 			.all();
 		return c.json({ data: rows });
@@ -257,8 +269,8 @@ app.get("/api/v1/mttd/gates", (c) => {
 	const db = getDb();
 	try {
 		const rows = db
-			.query(
-				"SELECT date, mttd_er, mttd_entropy FROM unified_daily_analytics ORDER BY date DESC",
+			.prepare(
+				"SELECT date, mttd_er, mttd_entropy, mttd_imo FROM unified_daily_analytics ORDER BY date DESC",
 			)
 			.all();
 		return c.json({ data: rows });
@@ -275,8 +287,8 @@ app.get("/api/v1/ichimoku/imo", (c) => {
 	const db = getDb();
 	try {
 		const rows = db
-			.query(
-				"SELECT date, ichi_imo FROM unified_daily_analytics ORDER BY date DESC",
+			.prepare(
+				"SELECT date, ichimoku_imo as ichi_imo, ichimoku_position as ichi_position FROM unified_daily_analytics ORDER BY date DESC",
 			)
 			.all();
 		return c.json({ data: rows });
@@ -289,8 +301,8 @@ app.get("/api/v1/ichimoku/position", (c) => {
 	const db = getDb();
 	try {
 		const rows = db
-			.query(
-				"SELECT date, ichi_position FROM unified_daily_analytics ORDER BY date DESC",
+			.prepare(
+				"SELECT date, ichimoku_position as ichi_position, ichimoku_regime FROM unified_daily_analytics ORDER BY date DESC",
 			)
 			.all();
 		return c.json({ data: rows });
@@ -303,8 +315,8 @@ app.get("/api/v1/ichimoku/components", (c) => {
 	const db = getDb();
 	try {
 		const rows = db
-			.query(
-				"SELECT date, ichi_s_tk, ichi_s_cloud, ichi_s_future, ichi_s_chikou FROM unified_daily_analytics ORDER BY date DESC",
+			.prepare(
+				"SELECT date, ichimoku_imo, ichimoku_regime, ichimoku_position FROM unified_daily_analytics ORDER BY date DESC",
 			)
 			.all();
 		return c.json({ data: rows });
@@ -321,7 +333,9 @@ app.get("/api/v1/consensus", (c) => {
 	const db = getDb();
 	try {
 		const latest = db
-			.query("SELECT * FROM unified_daily_analytics ORDER BY date DESC LIMIT 1")
+			.prepare(
+				"SELECT * FROM unified_daily_analytics ORDER BY date DESC LIMIT 1",
+			)
 			.get() as UnifiedAnalytics | null;
 
 		if (!latest) {
@@ -353,7 +367,7 @@ app.get("/api/v1/analytics/daily", (c) => {
 
 		query += " ORDER BY date ASC";
 
-		const rows = db.query(query).all(...params);
+		const rows = db.prepare(query).all(...params);
 		return c.json({ data: rows });
 	} finally {
 		db.close();
@@ -365,13 +379,16 @@ app.get("/api/v1/analytics/daily", (c) => {
 // ═══════════════════════════════════════════════════════════
 
 // Track connected clients
-const wsClients = new Set<WebSocket>();
+const wsClients = new Set<{
+	send: (data: string) => void;
+	readyState: number;
+}>();
 
 // Broadcast to all connected clients
 function broadcast(data: Record<string, unknown>): void {
 	const message = JSON.stringify(data);
 	for (const client of wsClients) {
-		if (client.readyState === WebSocket.OPEN) {
+		if (client.readyState === 1) {
 			client.send(message);
 		}
 	}
@@ -382,14 +399,16 @@ app.get(
 	"/ws/v1/stream",
 	upgradeWebSocket((c) => ({
 		onOpen(_event, ws) {
-			wsClients.add(ws);
+			wsClients.add(
+				ws as unknown as { send: (data: string) => void; readyState: number },
+			);
 			console.log(`🔌 WebSocket client connected (total: ${wsClients.size})`);
 
 			// Send initial state on connect
 			const db = getDb();
 			try {
 				const latest = db
-					.query(
+					.prepare(
 						"SELECT * FROM unified_daily_analytics ORDER BY date DESC LIMIT 1",
 					)
 					.get();
@@ -433,7 +452,9 @@ app.get(
 		},
 
 		onClose(_event, _ws) {
-			wsClients.delete(_ws);
+			wsClients.delete(
+				_ws as unknown as { send: (data: string) => void; readyState: number },
+			);
 			console.log(
 				`🔌 WebSocket client disconnected (total: ${wsClients.size})`,
 			);
@@ -441,24 +462,26 @@ app.get(
 
 		onError(event, ws) {
 			console.error("WebSocket error:", event);
-			wsClients.delete(ws);
+			wsClients.delete(
+				ws as unknown as { send: (data: string) => void; readyState: number },
+			);
 		},
 	})),
 );
 
 // ═══════════════════════════════════════════════════════════
-// Export
+// Start Server
 // ═══════════════════════════════════════════════════════════
 
-const server = {
-	port: 3000,
+const port = 3000;
+const server = serve({
 	fetch: app.fetch,
-};
+	port,
+	hostname: "0.0.0.0",
+});
 
 // Inject WebSocket upgrade handler
 injectWebSocket(server);
 
-export default server;
-
-console.log("🚀 Maftia Quant API running on http://localhost:3000");
-console.log("📡 WebSocket available at ws://localhost:3000/ws/v1/stream");
+console.log(`🚀 Maftia Quant API running on http://0.0.0.0:${port}`);
+console.log(`📡 WebSocket available at ws://0.0.0.0:${port}/ws/v1/stream`);

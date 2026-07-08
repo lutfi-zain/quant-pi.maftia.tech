@@ -115,48 +115,48 @@
 
 ## 13. Phase 3: Frontend — Charts
 
-- [ ] 13.1 Create BTC Price Chart with Lightweight Charts
-- [ ] 13.2 Add LTTD regime overlay (colored bands)
-- [ ] 13.3 Add MTTD trade markers (entry/exit)
-- [ ] 13.4 Add Ichimoku cloud overlay
-- [ ] 13.5 Implement Vertical Crosshair Synchronization
-- [ ] 13.6 Implement 85px Y-Axis Width Lock
-- [ ] 13.7 Add chart responsive behavior
+- [x] 13.1 Create BTC Price Chart with Lightweight Charts
+- [x] 13.2 Add LTTD regime overlay (colored bands)
+- [x] 13.3 Add MTTD trade markers (entry/exit)
+- [x] 13.4 Add Ichimoku cloud overlay
+- [x] 13.5 Implement Vertical Crosshair Synchronization
+- [x] 13.6 Implement 85px Y-Axis Width Lock
+- [x] 13.7 Add chart responsive behavior
 
 ## 14. Phase 4: Sandboxes — Framework
 
-- [ ] 14.1 Create sandbox router and navigation
-- [ ] 14.2 Create sandbox layout component
-- [ ] 14.3 Add sandbox entry points to Dashboard
-- [ ] 14.4 Create shared chart components library
+- [x] 14.1 Create sandbox router and navigation
+- [x] 14.2 Create sandbox layout component
+- [x] 14.3 Add sandbox entry points to Dashboard
+- [x] 14.4 Create shared chart components library
 
 ## 15. Phase 4: Sandboxes — Valuation Pillar Studio
 
-- [ ] 15.1 Create Valuation Studio page component
-- [ ] 15.2 Implement three-pillar display with indicator lists
-- [ ] 15.3 Implement Master Oscillator chart with threshold lines
-- [ ] 15.4 Add draggable threshold editor
-- [ ] 15.5 Add real-time score recalculation
+- [x] 15.1 Create Valuation Studio page component
+- [x] 15.2 Implement three-pillar display with indicator lists
+- [x] 15.3 Implement Master Oscillator chart with threshold lines
+- [x] 15.4 Add draggable threshold editor
+- [x] 15.5 Add real-time score recalculation
 
 ## 16. Phase 4: Sandboxes — LTTD Regime Lab
 
-- [ ] 16.1 Create LTTD Lab page component
-- [ ] 16.2 Implement regime timeline chart
-- [ ] 16.3 Add PCA component loadings visualization
-- [ ] 16.4 Add VIF heatmap
-- [ ] 16.5 Add WFO fold results table
+- [x] 16.1 Create LTTD Lab page component
+- [x] 16.2 Implement regime timeline chart
+- [x] 16.3 Add PCA component loadings visualization
+- [x] 16.4 Add VIF heatmap
+- [x] 16.5 Add WFO fold results table
 
 ## 17. Phase 4: Sandboxes — MTTD Console
 
-- [ ] 17.1 Create MTTD Console page component
-- [ ] 17.2 Implement IMO time-series chart with gate annotations
-- [ ] 17.3 Add trade markers on price chart
-- [ ] 17.4 Add gate blocker heatmap
+- [x] 17.1 Create MTTD Console page component
+- [x] 17.2 Implement IMO time-series chart with gate annotations
+- [x] 17.3 Add trade markers on price chart
+- [x] 17.4 Add gate blocker heatmap
 
 ## 18. Phase 4: Sandboxes — Ichimoku Terminal
 
-- [ ] 18.1 Create Ichimoku Terminal page component
-- [ ] 18.2 Implement 4-component breakdown display
-- [ ] 18.3 Add cloud overlay on price chart
-- [ ] 18.4 Add SuperSmoother parameter tuner
-- [ ] 18.5 Add statistical test results panel
+- [x] 18.1 Create Ichimoku Terminal page component
+- [x] 18.2 Implement 4-component breakdown display
+- [x] 18.3 Add cloud overlay on price chart
+- [x] 18.4 Add SuperSmoother parameter tuner
+- [x] 18.5 Add statistical test results panel

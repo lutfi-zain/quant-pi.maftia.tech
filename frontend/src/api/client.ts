@@ -59,6 +59,9 @@ export interface UnifiedAnalytics {
 	mvo_score: number | null;
 	lttd_score: number | null;
 	lttd_regime: string | null;
+	lttd_p_bull: number | null;
+	lttd_p_bear: number | null;
+	lttd_p_sideways: number | null;
 	lttd_exposure: number | null;
 	lttd_circuit_breaker: number | null;
 	mttd_imo: number | null;

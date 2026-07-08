@@ -5,11 +5,12 @@
  * Displays cross-system consensus and key metrics.
  */
 
-import type { UnifiedAnalytics } from "../api/client";
+import type { OHLCVBar, UnifiedAnalytics } from "../api/client";
 import { GlassPanel } from "./GlassPanel";
 import { ConfluenceGauge } from "./ConfluenceGauge";
 import { ActionBanner } from "./ActionBanner";
 import { SummaryTable } from "./SummaryTable";
+import { ChartSection } from "./ChartSection";
 
 // ═══════════════════════════════════════════════════════════
 // Types
@@ -17,13 +18,21 @@ import { SummaryTable } from "./SummaryTable";
 
 interface DashboardProps {
 	data: UnifiedAnalytics | null;
+	priceData?: OHLCVBar[];
+	analyticsHistory?: UnifiedAnalytics[];
+	onNavigate?: (page: string) => void;
 }
 
 // ═══════════════════════════════════════════════════════════
 // Dashboard Component
 // ═══════════════════════════════════════════════════════════
 
-export function Dashboard({ data }: DashboardProps) {
+export function Dashboard({
+	data,
+	priceData = [],
+	analyticsHistory = [],
+	onNavigate,
+}: DashboardProps) {
 	if (!data) {
 		return (
 			<div className="dashboard-empty">
@@ -122,7 +131,62 @@ export function Dashboard({ data }: DashboardProps) {
 				</div>
 			</div>
 
-			{/* Row 4: Safeguard Status */}
+			{/* Row 4: Chart Section */}
+			<div className="dashboard-row dashboard-row--chart">
+				<GlassPanel>
+					<ChartSection
+						priceData={priceData}
+						analyticsData={analyticsHistory}
+					/>
+				</GlassPanel>
+			</div>
+
+			{/* Row 5: Sandbox Navigation */}
+			<div className="dashboard-row dashboard-row--nav">
+				<GlassPanel>
+					<h2 className="panel-title">Deep-Dive Sandboxes</h2>
+					<div className="dashboard-nav">
+						<button
+							type="button"
+							className="nav-card"
+							onClick={() => onNavigate?.("valuation")}
+						>
+							<span className="nav-card-icon">📊</span>
+							<span className="nav-card-label">Valuation Studio</span>
+							<span className="nav-card-desc">17-indicator MVO analysis</span>
+						</button>
+						<button
+							type="button"
+							className="nav-card"
+							onClick={() => onNavigate?.("lttd")}
+						>
+							<span className="nav-card-icon">🔄</span>
+							<span className="nav-card-label">LTTD Lab</span>
+							<span className="nav-card-desc">Regime detection & PCA</span>
+						</button>
+						<button
+							type="button"
+							className="nav-card"
+							onClick={() => onNavigate?.("mttd")}
+						>
+							<span className="nav-card-icon">⚡</span>
+							<span className="nav-card-label">MTTD Console</span>
+							<span className="nav-card-desc">IMO signal & gates</span>
+						</button>
+						<button
+							type="button"
+							className="nav-card"
+							onClick={() => onNavigate?.("ichimoku")}
+						>
+							<span className="nav-card-icon">☁️</span>
+							<span className="nav-card-label">Ichimoku Terminal</span>
+							<span className="nav-card-desc">4-component cloud analysis</span>
+						</button>
+					</div>
+				</GlassPanel>
+			</div>
+
+			{/* Row 6: Safeguard Status */}
 			<div className="dashboard-row dashboard-row--safeguards">
 				<GlassPanel className="safeguard-panel">
 					<h2 className="panel-title">Interlocking Safeguards</h2>

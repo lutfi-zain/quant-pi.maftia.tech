@@ -1,13 +1,22 @@
 /**
  * Maftia Quant — Executive Dashboard
  *
- * Main application entry point.
+ * Main application entry point with routing.
  */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Dashboard } from "./components/Dashboard";
-import { fetchConsensus, ping } from "./api/client";
-import type { UnifiedAnalytics } from "./api/client";
+import { ValuationStudio } from "./components/sandboxes/ValuationStudio";
+import { LTTDLab } from "./components/sandboxes/LTTDLab";
+import { MTTDConsole } from "./components/sandboxes/MTTDConsole";
+import { IchimokuTerminal } from "./components/sandboxes/IchimokuTerminal";
+import {
+	fetchConsensus,
+	fetchOHLCV,
+	fetchDailyAnalytics,
+	ping,
+} from "./api/client";
+import type { OHLCVBar, UnifiedAnalytics } from "./api/client";
 import "./styles/tokens.css";
 import "./styles/components.css";
 
@@ -20,7 +29,11 @@ interface AppState {
 	loading: boolean;
 	error: string | null;
 	data: UnifiedAnalytics | null;
+	priceData: OHLCVBar[];
+	analyticsHistory: UnifiedAnalytics[];
 }
+
+type Page = "dashboard" | "valuation" | "lttd" | "mttd" | "ichimoku";
 
 // ═══════════════════════════════════════════════════════════
 // App Component
@@ -32,7 +45,16 @@ export default function App() {
 		loading: true,
 		error: null,
 		data: null,
+		priceData: [],
+		analyticsHistory: [],
 	});
+
+	const [currentPage, setCurrentPage] = useState<Page>("dashboard");
+
+	const handleNavigate = useCallback((page: string) => {
+		setCurrentPage(page as Page);
+		window.scrollTo(0, 0);
+	}, []);
 
 	// Check API connection on mount
 	useEffect(() => {
@@ -42,11 +64,18 @@ export default function App() {
 				setState((prev) => ({ ...prev, connected: true }));
 
 				// Fetch initial data
-				const data = await fetchConsensus();
+				const [consensus, priceData, analyticsHistory] = await Promise.all([
+					fetchConsensus(),
+					fetchOHLCV({}),
+					fetchDailyAnalytics({}),
+				]);
+
 				setState((prev) => ({
 					...prev,
 					loading: false,
-					data,
+					data: consensus,
+					priceData,
+					analyticsHistory,
 				}));
 			} catch (err) {
 				setState((prev) => ({
@@ -63,8 +92,8 @@ export default function App() {
 		// Poll for updates every 30 seconds
 		const interval = setInterval(async () => {
 			try {
-				const data = await fetchConsensus();
-				setState((prev) => ({ ...prev, data, connected: true }));
+				const consensus = await fetchConsensus();
+				setState((prev) => ({ ...prev, data: consensus, connected: true }));
 			} catch {
 				setState((prev) => ({ ...prev, connected: false }));
 			}
@@ -134,6 +163,52 @@ export default function App() {
 		);
 	}
 
+	const renderPage = () => {
+		switch (currentPage) {
+			case "valuation":
+				return (
+					<ValuationStudio
+						data={state.data}
+						analyticsHistory={state.analyticsHistory}
+						onBack={() => handleNavigate("dashboard")}
+					/>
+				);
+			case "lttd":
+				return (
+					<LTTDLab
+						data={state.data}
+						analyticsHistory={state.analyticsHistory}
+						onBack={() => handleNavigate("dashboard")}
+					/>
+				);
+			case "mttd":
+				return (
+					<MTTDConsole
+						data={state.data}
+						analyticsHistory={state.analyticsHistory}
+						onBack={() => handleNavigate("dashboard")}
+					/>
+				);
+			case "ichimoku":
+				return (
+					<IchimokuTerminal
+						data={state.data}
+						analyticsHistory={state.analyticsHistory}
+						onBack={() => handleNavigate("dashboard")}
+					/>
+				);
+			default:
+				return (
+					<Dashboard
+						data={state.data}
+						priceData={state.priceData}
+						analyticsHistory={state.analyticsHistory}
+						onNavigate={handleNavigate}
+					/>
+				);
+		}
+	};
+
 	return (
 		<div className="app">
 			<header className="app-header">
@@ -151,9 +226,7 @@ export default function App() {
 				</div>
 			</header>
 
-			<main className="app-main">
-				<Dashboard data={state.data} />
-			</main>
+			<main className="app-main">{renderPage()}</main>
 
 			<footer className="app-footer">
 				<span className="footer-text">
