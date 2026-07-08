@@ -1,0 +1,69 @@
+# ═══════════════════════════════════════════════════════════
+# Maftia Quant — .gitignore
+# ═══════════════════════════════════════════════════════════
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# JavaScript / TypeScript
+node_modules/
+.bun/
+bun.lockb
+*.tsbuildinfo
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
+
+# Temp & Logs
+tmp/
+*.log
+logs/
+
+# Databases (large binary files)
+*.db
+*.db-wal
+*.db-shm
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build outputs
+dist/
+build/
+*.min.js
+*.min.css
+
+# Coverage
+htmlcov/
+.coverage
+coverage/
+*.cover
+
+# Pytest
+.pytest_cache/
+
+# Node
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Bun
+.bun/install/cache/
