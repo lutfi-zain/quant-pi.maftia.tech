@@ -67,9 +67,3 @@ yarn-error.log*
 
 # Bun
 .bun/install/cache/
-
-# Pi Agent System
-.pi/
-
-# OpenSpec
-openspec/
