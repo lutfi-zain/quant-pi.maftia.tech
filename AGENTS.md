@@ -188,6 +188,12 @@ The interlocking matrix is the core innovation. These safeguards prevent catastr
 - **[2026-07-08]** This is a documentation-only repository — no code files exist yet. Code lives in separate repos: `quant-btc-valuation-system`, `quant-btc-lttd-system`, `quant-btc-mttd-system`, `quant-lttd-ichimoku`. (from initial setup)
 - **[2026-07-08]** `quant-technical-indicator-bank` is EXCLUDED from this project — do not add references to it. (from user request)
 - **[2026-07-08]** Always use `/session-learn` and `/daily-reflect` to evolve this file and record daily reflections. (from user request)
+- **[2026-07-08]** Runtime: Use npm, not bun. Bun has mirror issues on this machine. API uses `better-sqlite3` not `bun:sqlite`. (from session: bun install failed → switched to npm)
+- **[2026-07-08]** Hono WebSocket import: use `@hono/node-ws` not `hono/node-ws`. Also need `@hono/node-server` for Node.js serve(). (from session: module not found errors)
+- **[2026-07-08]** Lightweight Charts v4 does NOT support CSS variables. Use hex/rgba values directly. Create `chart-colors.ts` constants file. (from session: `Cannot parse color: var(--text-secondary)` crash)
+- **[2026-07-08]** DB schema mismatch: API queries must match actual `unified_daily_analytics` columns. Key mapping: `valuation_composite` (not `mvo_score`), `lttd_prob_bull` (not `lttd_p_bull`), `ichimoku_*` (not `ichi_*`). (from session: 500 errors on API endpoints)
+- **[2026-07-08]** Vite requires `index.html` in project root. Without it, dev server returns 404. (from session: frontend served empty)
+- **[2026-07-08]** Frontend must bind to `0.0.0.0` in vite.config.ts `server.host` for network access. API uses `hostname: "0.0.0.0"` in serve(). (from session: user requested external access)
 
 ---
 
