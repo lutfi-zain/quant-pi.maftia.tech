@@ -12,7 +12,7 @@
 - [x] 2.1 Design `maftia_quant.db` schema with all tables (master_ohlcv, unified_daily_analytics, unified_component_signals)
 - [x] 2.2 Create SQL migration script `migrations/001_create_schema.sql`
 - [x] 2.3 Add indexes for query performance (date, regime, system)
-- [ ] 2.4 Write schema validation tests
+- [x] 2.4 Write schema validation tests
 - [x] 2.5 Create `db.py` module with SQLite WAL connection management
 
 ## 3. Phase 1: Storage & ETL — CausalFreshnessGuard
@@ -34,12 +34,12 @@
 
 ## 5. Phase 1: Storage & ETL — System Migration
 
-- [ ] 5.1 Migrate LTTD system: create `pipelines/lttd_migration.py`
-- [ ] 5.2 Migrate Valuation system: create `pipelines/valuation_migration.py`
-- [ ] 5.3 Sync MTTD data: create `pipelines/mttd_sync.py`
-- [ ] 5.4 Sync Ichimoku data: create `pipelines/ichimoku_sync.py`
-- [ ] 5.5 Write migration validation tests
-- [ ] 5.6 Create `run_migrate_all.py` orchestrator
+- [x] 5.1 Migrate LTTD system: create `pipelines/lttd_migration.py`
+- [x] 5.2 Migrate Valuation system: create `pipelines/valuation_migration.py`
+- [x] 5.3 Sync MTTD data: create `pipelines/mttd_sync.py`
+- [x] 5.4 Sync Ichimoku data: create `pipelines/ichimoku_sync.py`
+- [x] 5.5 Write migration validation tests
+- [x] 5.6 Create `run_migrate_all.py` orchestrator
 
 ## 6. Phase 1: Storage & ETL — Daily Analytics Runner
 
@@ -90,10 +90,10 @@
 
 - [x] 10.1 Implement `GET /api/v1/consensus` with latest analytics
 - [x] 10.2 Add interlocking safeguard logic in consensus endpoint
-- [ ] 10.3 Create WebSocket server at `ws://localhost:3000/ws/v1/stream`
-- [ ] 10.4 Implement data push on analytics update
-- [ ] 10.5 Add WebSocket connection management
-- [ ] 10.6 Write WebSocket integration tests
+- [x] 10.3 Create WebSocket server at `ws://localhost:3000/ws/v1/stream`
+- [x] 10.4 Implement data push on analytics update
+- [x] 10.5 Add WebSocket connection management
+- [x] 10.6 Write WebSocket integration tests
 
 ## 11. Phase 3: Frontend — Scaffold
 
@@ -106,12 +106,12 @@
 
 ## 12. Phase 3: Frontend — Executive Dashboard
 
-- [ ] 12.1 Create Dashboard layout with Bento grid
-- [ ] 12.2 Implement Cross-System Confluence Gauge component
-- [ ] 12.3 Implement Action Banner component with safeguard states
-- [ ] 12.4 Implement Interactive Summary Table component
-- [ ] 12.5 Add table sorting functionality
-- [ ] 12.6 Connect components to API client
+- [x] 12.1 Create Dashboard layout with Bento grid
+- [x] 12.2 Implement Cross-System Confluence Gauge component
+- [x] 12.3 Implement Action Banner component with safeguard states
+- [x] 12.4 Implement Interactive Summary Table component
+- [x] 12.5 Add table sorting functionality
+- [x] 12.6 Connect components to API client
 
 ## 13. Phase 3: Frontend — Charts
 

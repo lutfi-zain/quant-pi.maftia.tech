@@ -11,6 +11,7 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
+import { createNodeWebSocket } from "hono/node-ws";
 import { Database } from "bun:sqlite";
 
 // ═══════════════════════════════════════════════════════════
@@ -62,10 +63,11 @@ function getDb(): Database {
 }
 
 // ═══════════════════════════════════════════════════════════
-// App Setup
+// App Setup with WebSocket
 // ═══════════════════════════════════════════════════════════
 
 const app = new Hono();
+const { injectWebSocket, upgradeWebSocket } = createNodeWebSocket({ app });
 
 // Middleware
 app.use("*", logger());
@@ -359,12 +361,104 @@ app.get("/api/v1/analytics/daily", (c) => {
 });
 
 // ═══════════════════════════════════════════════════════════
+// WebSocket Server
+// ═══════════════════════════════════════════════════════════
+
+// Track connected clients
+const wsClients = new Set<WebSocket>();
+
+// Broadcast to all connected clients
+function broadcast(data: Record<string, unknown>): void {
+	const message = JSON.stringify(data);
+	for (const client of wsClients) {
+		if (client.readyState === WebSocket.OPEN) {
+			client.send(message);
+		}
+	}
+}
+
+// WebSocket endpoint for real-time analytics streaming
+app.get(
+	"/ws/v1/stream",
+	upgradeWebSocket((c) => ({
+		onOpen(_event, ws) {
+			wsClients.add(ws);
+			console.log(`🔌 WebSocket client connected (total: ${wsClients.size})`);
+
+			// Send initial state on connect
+			const db = getDb();
+			try {
+				const latest = db
+					.query(
+						"SELECT * FROM unified_daily_analytics ORDER BY date DESC LIMIT 1",
+					)
+					.get();
+
+				ws.send(
+					JSON.stringify({
+						type: "init",
+						data: latest,
+						timestamp: new Date().toISOString(),
+					}),
+				);
+			} finally {
+				db.close();
+			}
+		},
+
+		onMessage(event, ws) {
+			try {
+				const message = JSON.parse(String(event.data));
+
+				if (message.type === "ping") {
+					ws.send(
+						JSON.stringify({
+							type: "pong",
+							timestamp: new Date().toISOString(),
+						}),
+					);
+				} else if (message.type === "subscribe") {
+					// Client can subscribe to specific channels
+					ws.send(
+						JSON.stringify({
+							type: "subscribed",
+							channel: message.channel,
+							timestamp: new Date().toISOString(),
+						}),
+					);
+				}
+			} catch (e) {
+				console.error("WebSocket message error:", e);
+			}
+		},
+
+		onClose(_event, _ws) {
+			wsClients.delete(_ws);
+			console.log(
+				`🔌 WebSocket client disconnected (total: ${wsClients.size})`,
+			);
+		},
+
+		onError(event, ws) {
+			console.error("WebSocket error:", event);
+			wsClients.delete(ws);
+		},
+	})),
+);
+
+// ═══════════════════════════════════════════════════════════
 // Export
 // ═══════════════════════════════════════════════════════════
 
-export default {
+const server = {
 	port: 3000,
 	fetch: app.fetch,
 };
 
+// Inject WebSocket upgrade handler
+injectWebSocket(server);
+
+export default server;
+
 console.log("🚀 Maftia Quant API running on http://localhost:3000");
+console.log("📡 WebSocket available at ws://localhost:3000/ws/v1/stream");
