@@ -2,7 +2,7 @@
 
 > **Version:** 1.0.0 · **Date:** 2026-07-08  
 > **Repository:** `quant-pi.maftia.tech`  
-> **Objective:** Consolidate 4 quantitative Bitcoin systems + 1 indicator bank into a single, interlocking intelligence platform with unified data ingestion, consolidated storage, single API gateway, and a premium financial terminal frontend.
+> **Objective:** Consolidate 4 quantitative Bitcoin systems into a single, interlocking intelligence platform with unified data ingestion, consolidated storage, single API gateway, and a premium financial terminal frontend.
 
 ---
 
@@ -14,7 +14,7 @@
 - [4. Consolidated Storage: maftia_quant.db](#4-consolidated-storage-maftia_quantdb)
 - [5. Single API Gateway: api.quant-pi.maftia.tech](#5-single-api-gateway-apiquant-pimaftiatech)
 - [6. Interlocking Quantitative Safeguards](#6-interlocking-quantitative-safeguards)
-- [7. Proposal: Frontend & 5 Deep-Dive Sandboxes](#7-proposal-frontend--5-deep-dive-sandboxes)
+- [7. Proposal: Frontend & 4 Deep-Dive Sandboxes](#7-proposal-frontend--4-deep-dive-sandboxes)
 - [8. Desain Layout, UI/UX & Rich Aesthetics System](#8-desain-layout-uiux--rich-aesthetics-system)
 - [9. Roadmap Implementasi 4 Fase](#9-roadmap-implementasi-4-fase)
 - [10. Mermaid Interlocking Matrix](#10-mermaid-interlocking-matrix)
@@ -23,7 +23,7 @@
 
 ## 1. Executive Summary
 
-The Maftia Quant platform unifies four independent quantitative Bitcoin systems and one indicator bank into a cohesive intelligence platform. Each system operates on a distinct time horizon and statistical methodology, but together they form an **interlocking matrix** where the output of one system constrains or amplifies the behavior of another.
+The Maftia Quant platform unifies four independent quantitative Bitcoin systems into a cohesive intelligence platform. Each system operates on a distinct time horizon and statistical methodology, but together they form an **interlocking matrix** where the output of one system constrains or amplifies the behavior of another.
 
 ```mermaid
 graph TB
@@ -47,7 +47,6 @@ graph TB
         DB --> LTTD[LTTD System<br/>HMM + PCA Ensemble]
         DB --> MTTD[MTTD System<br/>Multi-Principle Consensus]
         DB --> ICHI[Ichimoku Terminal<br/>tanh + SuperSmoother]
-        DB --> BANK[Indicator Bank<br/>10 Families]
     end
     subgraph "INTERLOCKING SAFEGUARDS"
         VAL -->|Circuit Breaker| LTTD
@@ -59,10 +58,9 @@ graph TB
         LTTD --> API
         MTTD --> API
         ICHI --> API
-        BANK --> API
     end
     subgraph "UNIFIED FRONTEND"
-        API --> FE[Executive Dashboard<br/>+ 5 Sandboxes]
+        API --> FE[Executive Dashboard<br/>+ 4 Sandboxes]
     end
 ```
 
@@ -76,7 +74,6 @@ graph TB
 | 2 | **LTTD System** | Long-Term (120–350 days) | 3-State HMM + PCA + XGBoost | API `:8765`, FE `:8766` | `lttd.db` (SQLite WAL) |
 | 3 | **MTTD System** | Medium-Term (10–120 days) | Multi-principle consensus + IMO | — | `btc_daily.json` + `signals.csv` |
 | 4 | **Ichimoku Terminal** | Medium-Term (10–60 days) | tanh Ichimoku + SuperSmoother | FastAPI `:8000` | yfinance cache |
-| 5 | **Indicator Bank** | Library | 10 families, Pine→Python | Vite `:5173` (dev) | `library.yaml` + JSON |
 
 ---
 
@@ -371,7 +368,7 @@ def compute_consensus_exposure(valuation, lttd, mttd, ichimoku):
 
 ---
 
-## 7. Proposal: Frontend & 5 Deep-Dive Sandboxes
+## 7. Proposal: Frontend & 4 Deep-Dive Sandboxes
 
 ### 7.1 Executive Dashboard (Main View)
 
@@ -441,7 +438,7 @@ Sortable, filterable table showing per-system status with drill-down capability.
 
 ---
 
-### 7.5 Five Deep-Dive Sandboxes
+### 7.5 Four Deep-Dive Sandboxes
 
 Each sandbox is a dedicated full-screen workspace for deep analysis of one system.
 
@@ -542,21 +539,6 @@ Each sandbox is a dedicated full-screen workspace for deep analysis of one syste
 │  [SuperSmoother Parameter Tuner (l=4, l=7)]                  │
 │  [5-Gate Status Dashboard with Visual Gates]                  │
 │  [Statistical Test Results Panel — ADF, KS, t-test, CI]      │
-└──────────────────────────────────────────────────────────────┘
-```
-
-#### Sandbox 5: Indicator Bank Backtester
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│  INDICATOR BANK BACKTESTER                                    │
-│                                                               │
-│  [Pine Script Source → Python Translation Viewer]             │
-│  [10-Family Radar Chart — Current Indicator Composition]     │
-│  [Per-Indicator Backtest Results Table]                       │
-│  [MTTD Consensus Stack — 15 signals + net vote chart]        │
-│  [Library.yaml Registry — Filter by status/family]           │
-│  [Custom Indicator Playground — Mix & match families]         │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -769,14 +751,12 @@ crosshairBus.on('crosshair:move', ({ time, source }) => {
 | LTTD Orthogonal Regime Lab | P1 | High | Sandbox framework |
 | MTTD Console | P1 | High | Sandbox framework |
 | Ichimoku Terminal | P1 | High | Sandbox framework |
-| Indicator Bank Backtester | P1 | High | Sandbox framework |
 | Custom threshold editor (Valuation) | P2 | Medium | Pillar Studio |
 | PCA biplot visualization (LTTD) | P2 | Medium | Regime Lab |
 | Gate blocker heatmap (MTTD) | P2 | Medium | Console |
 | Statistical test results panel (Ichimoku) | P2 | Medium | Terminal |
-| Custom indicator playground | P2 | High | Backtester |
 
-**Deliverable:** 5 fully functional sandboxes with deep-dive analytics.
+**Deliverable:** 4 fully functional sandboxes with deep-dive analytics.
 
 ---
 
@@ -811,7 +791,7 @@ graph TB
     end
     
     subgraph "UNIFIED FRONTEND"
-        DASH["Executive Dashboard<br/>+ 5 Sandboxes"]
+        DASH["Executive Dashboard<br/>+ 4 Sandboxes"]
     end
     
     BINANCE --> DB

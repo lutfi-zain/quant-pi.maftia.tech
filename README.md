@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**A unified quantitative Bitcoin intelligence platform that aggregates 4 independent trading systems and 1 indicator bank into a cohesive architecture with interlocking safeguards.**
+**A unified quantitative Bitcoin intelligence platform that aggregates 4 independent trading systems into a cohesive architecture with interlocking safeguards.**
 
 ![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
@@ -49,7 +49,6 @@ graph TB
         DB --> LTTD[LTTD System<br/>HMM + PCA + XGBoost]
         DB --> MTTD[MTTD System<br/>Multi-Principle Consensus]
         DB --> ICHI[Ichimoku Terminal<br/>tanh + SuperSmoother]
-        DB --> BANK[Indicator Bank<br/>10 Families]
     end
 
     subgraph "INTERLOCKING SAFEGUARDS"
@@ -95,7 +94,7 @@ quant-pi.maftia.tech/
     ├── 02_quant_btc_lttd_system.md        # 6-Layer Regime-Switching LTTD System
     ├── 03_quant_btc_mttd_system.md        # Multi-Principle Consensus MTTD v2
     ├── 04_quant_lttd_ichimoku.md          # Denoised Stationary Tanh Ichimoku
-    └── 05_quant_technical_indicator_bank.md # Pine Scraper, Core Library, & 10 Families
+    └── AGENTS.md                            # AI Agent Guardrails & Conventions
 ```
 
 ---
@@ -122,7 +121,6 @@ The core innovation — systems constrain each other to prevent excessive risk:
 | [LTTD System](docs/02_quant_btc_lttd_system.md) | Long-term regime detection | HMM, PCA, XGBoost, OU half-life, VIF pruning |
 | [MTTD System](docs/03_quant_btc_mttd_system.md) | Medium-term trend consensus | IMO formula, Kaufman ER, Shannon Entropy |
 | [Ichimoku Terminal](docs/04_quant_lttd_ichimoku.md) | Denoised Ichimoku signals | tanh, SuperSmoother, 5 formal statistical tests |
-| [Indicator Bank](docs/05_quant_technical_indicator_bank.md) | Pine→Python library | agent-browser scraper, 10 statistical families |
 
 ---
 
@@ -166,7 +164,6 @@ This repository contains **documentation and architecture only**. The actual sys
 | LTTD System | `quant-btc-lttd-system` | API `:8765`, FE `:8766` |
 | MTTD System | `quant-btc-mttd-system` | — |
 | Ichimoku Terminal | `quant-lttd-ichimoku` | FastAPI `:8000` |
-| Indicator Bank | `quant-technical-indicator-bank` | Vite `:5173` |
 
 The unified platform architecture is defined in [`UNIFIED_SYSTEM_ARCHITECTURE.md`](UNIFIED_SYSTEM_ARCHITECTURE.md).
 

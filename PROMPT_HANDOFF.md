@@ -8,11 +8,11 @@
 
 ## 1. What Is This Repository?
 
-This is the **central documentation and architecture repository** for the Maftia Quant platform — a unified quantitative Bitcoin intelligence system that aggregates 4 independent trading systems and 1 indicator bank into a cohesive intelligence platform with interlocking safeguards.
+This is the **central documentation and architecture repository** for the Maftia Quant platform — a unified quantitative Bitcoin intelligence system that aggregates 4 independent trading systems into a cohesive intelligence platform with interlocking safeguards.
 
 ---
 
-## 2. The 5 Component Systems
+## 2. The 4 Component Systems
 
 | # | System | Purpose | Horizon | Key Method |
 |---|--------|---------|---------|------------|
@@ -20,7 +20,6 @@ This is the **central documentation and architecture repository** for the Maftia
 | 2 | **LTTD System** | Long-term trend direction | 120–350 days | 3-State HMM + PCA + XGBoost |
 | 3 | **MTTD System** | Medium-term trend following | 10–120 days | Multi-principle consensus + IMO |
 | 4 | **Ichimoku Terminal** | Denoised Ichimoku signals | 10–60 days | tanh normalization + SuperSmoother |
-| 5 | **Indicator Bank** | Pine→Python indicator library | Library | 10 statistical families |
 
 ---
 
@@ -43,11 +42,11 @@ Binance OHLCV + bitview.space BRK + alternative.me
         ↓
     maftia_quant.db (SQLite WAL)
         ↓
-    Valuation → LTTD → MTTD → Ichimoku → Indicator Bank
+    Valuation → LTTD → MTTD → Ichimoku
         ↓
     api.quant-pi.maftia.tech (Hono v4 / Bun)
         ↓
-    Executive Dashboard + 5 Sandboxes
+    Executive Dashboard + Sandboxes
 ```
 
 ---
@@ -58,11 +57,11 @@ Binance OHLCV + bitview.space BRK + alternative.me
 |------|-------------|
 | `UNIFIED_SYSTEM_ARCHITECTURE.md` | Master architecture document — read this first |
 | `README.md` | Project index and Mermaid interlocking diagram |
+| `AGENTS.md` | AI Agent guardrails and conventions |
 | `docs/01_quant_btc_valuation_system.md` | Valuation System deep-dive |
 | `docs/02_quant_btc_lttd_system.md` | LTTD System deep-dive |
 | `docs/03_quant_btc_mttd_system.md` | MTTD System deep-dive |
 | `docs/04_quant_lttd_ichimoku.md` | Ichimoku Terminal deep-dive |
-| `docs/05_quant_technical_indicator_bank.md` | Indicator Bank deep-dive |
 | `PROMPT_HANDOFF.md` | This document |
 
 ---
