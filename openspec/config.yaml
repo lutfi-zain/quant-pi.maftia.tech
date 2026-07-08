@@ -1,0 +1,73 @@
+schema: spec-driven
+
+# Project context — injected into ALL AI artifacts
+context: |
+  Domain: Unified Bitcoin Quantitative Intelligence Platform
+  Repository: quant-pi.maftia.tech
+  
+  ## Systems (4 to unify)
+  1. Valuation System — 17-indicator MVO piecewise [-2,+2], macro cycle
+  2. LTTD System — 3-State HMM + PCA + XGBoost, 120-350 day horizon
+  3. MTTD System — Multi-principle consensus + IMO, 10-120 day horizon
+  4. Ichimoku Terminal — tanh Ichimoku + SuperSmoother, 10-60 day horizon
+  
+  ## Tech Stack
+  - Python 3.10+ (analytics engines): pandas, numpy, scikit-learn, hmmlearn, XGBoost
+  - TypeScript/Bun (API Gateway): Hono v4
+  - React 18 + TypeScript (Frontend): Vite, TradingView Lightweight Charts v5
+  - Storage: SQLite WAL (maftia_quant.db)
+  
+  ## Ubiquitous Language (DDD)
+  - MVO: Master Valuation Oscillator ∈ [-2, +2]
+  - LTTD: Long-Term Trend Direction
+  - MTTD: Medium-Term Trend Direction
+  - IMO: Integrated Market Oscillator ∈ [-1, +1]
+  - Regime: HMM state (BULL/BEAR/SIDEWAYS)
+  - Circuit Breaker: MVO ≥ +1.50 → all systems forced to 0.0 exposure
+  - Regime Override: LTTD BEAR/SIDEWAYS → MTTD + Ichimoku forced to 0.0
+  - CausalFilter: Zero lookahead bias — only past bars referenced
+  - OU Half-Life: Ornstein-Uhlenbeck mean-reversion speed (120-350d)
+  - PCA: Principal Component Analysis — eliminates multicollinearity
+  - VIF: Variance Inflation Factor > 10 → drop feature
+  - Kaufman ER: Efficiency Ratio ∈ [0, 1]
+  - Shannon Entropy: Information-theoretic noise gate
+  - tanh: Hyperbolic tangent → [-1, +1] bounded
+  - SuperSmoother: Ehlers 2-pole IIR filter
+  - WFO: Walk-Forward Optimization
+  
+  ## Architecture
+  - Interlocking safeguards: Circuit Breaker (Tier 1), Regime Override (Tier 2)
+  - Binary sizing: Position always 0.0 or 1.0 — no fractional
+  - CausalFreshnessGuard on all data ingestion
+  - One Component = One Script (independently backtestable)
+
+# Per-artifact rules
+rules:
+  proposal:
+    - Include interlocking safeguard impact analysis
+    - Identify which systems are affected (Valuation, LTTD, MTTD, Ichimoku)
+    - Reference AGENTS.md constraints before proposing changes
+    - Include rollback plan for database schema changes
+    - Never propose changes that bypass Circuit Breaker or Regime Override
+
+  specs:
+    - Use Given/When/Then format for behavioral specs
+    - Reference existing patterns in Gold Standard files before inventing new ones
+    - All indicators must specify CausalFilter compliance
+    - Include VIF analysis for any new features
+    - Specify normalization method (piecewise vs tanh)
+
+  design:
+    - Follow 6-layer architecture pattern from LTTD system
+    - Include SQLite WAL schema changes if applicable
+    - Specify API endpoint design following Hono v4 patterns
+    - Include Mermaid diagrams for data flow
+    - Document cross-system dependencies
+
+  tasks:
+    - Break tasks into chunks of max 2 hours
+    - Each task must be independently testable
+    - Include type hints requirement for Python
+    - Include TypeScript strict mode requirement
+    - Reference specific files to modify
+    - Include test commands in task descriptions
